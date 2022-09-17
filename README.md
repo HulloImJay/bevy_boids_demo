@@ -1,4 +1,5 @@
 # A Boids Demo in Bevy
+
 https://user-images.githubusercontent.com/2727461/190869557-fd8cdb08-434f-42ea-bf1d-f004f9ac17e6.mov
 
 ## What is this repo?
@@ -40,6 +41,7 @@ Not at all. Although the crow asset used here was inspired by the commonness of 
 
 ## Assets
 There is a house crow model created for this project, which you will find here: _assets/house_crow.blend_. It's a pretty basic, low-poly model with vertex colours and only the crudest animations, but it's also my third model ever so I'm fine with it 😊
+
 ![2022-09-16 — House Crow for README(1)](https://user-images.githubusercontent.com/2727461/190869582-d440cf9f-a485-41b8-a646-fe23347cba0e.gif)
 
 ## License
