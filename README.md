@@ -1,78 +1,62 @@
-# Bevy GitHub CI Template
+# A Boids Demo in Bevy
 
-This repo show how to set up CI on a GitHub project for Bevy.
 
-It creates two workflows:
+## What is this repo?
+ * This is an implementation of the [Boids](https://en.wikipedia.org/wiki/Boids) algorithm in the [Bevy game engine](https://bevyengine.org/).
+ * This was a learning project for me as I was new to both Bevy and [Rust](https://www.rust-lang.org/).
+ * This is _not_ a terribly clean or directly re-usable implementation of Boids (so sorry), but you're welcome to cherry pick anything you find interesting.
 
-* [CI](#CI)
-* [Release](#Release)
+## What is Boids?
 
-## CI
+[Boids](https://en.wikipedia.org/wiki/Boids) is a simple algorithm for simulating flocking behaviour. It has applications in videogames and nature simulations, and is a common subject for little tech demos such as this one :)
 
-Definition: [.github/workflows/ci.yaml](./.github/workflows/ci.yaml)
+You will find many excellent outlines of the algorithm on the web, so one is not provided here.
+ 
+## Controls
 
-This workflow runs on every commit to `main` branch, and on every PR targeting the `main` branch.
+When the demo starts up, you will see some crows flying around somewhat randomly. Over time, they will coalesce into several small flocks or even merge into one large one.
 
-It will use rust stable on linux, with cache between different executions, those commands:
+You can adjust several properties of the simulation:
+ * *separation* — how strongly the birds try to keep distance from their neighbours
+ * *alignment* — how strongly the birds try to keep the same direction as their neighbours
+ * *cohesion* — how strongly the birds try to keep close to their neighbours
+ * *keep in bounds* — how strongly the birds want to keep from going out of bounds (the rectangular area)
+ * *keep level* — how strongly the birds want to avoid up and down movement
 
-* `cargo test`
-* `cargo clippy -- -D warnings`
-* `cargo fmt --all -- --check`
+Play around with these and give them time to have an impact on the birds' formations.
+ 
+## Try It Out
 
-If you are using anything OS specific or rust nightly, you should update the file [ci.yaml](./.github/workflows/ci.yaml) to use those.
+### On the Web
 
-## Release
+A web build is available [here](https://hulloimjay.github.io/bevy_boids_demo/). Your browser must support [WebAssembly](https://webassembly.org/) and [WebGL](https://get.webgl.org/).
 
-Definition: [.github/workflows/release.yaml](./.github/workflows/release.yaml)
+### Native Builds
 
-This workflow runs on every tag.
+Download a native build under [Releases](https://github.com/HulloImJay/bevy_boids_demo/releases). I have only tested on macOS, but the Windows and Linux builds _should_ work 🤷
 
-It will build:
-* For Linux and Windows, a .zip archive containing the executable and the `assets`.
-* For macOS, a dmg image with a .app containing the assets.
-* For wasm, a .zip archive with the wasm binary, the js bindings, an html file loading it, and the assets.
+### Build It Yerself
+If you have Rust installed, you should be able to clone the repo and build and run the demo yourself with `cargo run`.
 
-If you don't want to target some of those platforms, you can remove the corresponding job from the file [release.yaml](./.github/workflows/release.yaml).
+## Is This How Crows Fly?
 
-If you don't want to attach the builds to the GitHub release, set `env.add_binaries_to_github_release` to `false`.
+Not at all. Although the crow asset used here was inspired by the commonness of the birds in Batticaloa (where I was staying while working on this project), the behaviour here is nothing much beyond a demo of the Boids algorithm and is not a realistic of the behaviour of real crows.
 
-### Git Tag from GitHub UI
+## Assets
+There is a house crow model created for this project, which you will find here: _assets/house_crow.blend_. It's a pretty basic, low-poly model with vertex colours and only the crudest animations, but it's also my third model ever so I'm fine with it 😊
 
-You can follow [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
 
-### Git Tag from the CLI
 
-Execute the following commands: 
+## License
+Everything in this repo (including the house crow and agouti models under assets) is provided to the public domain and you are free to use or modify as you like without restriction.
 
-```sh
-git tag -a "my-game-1.0" -m "First official release"
-git push --tags
-```
+## Dinacon 2022
+This project was created during [Dinacon 2022](https://www.2022.dinacon.org) in Batticaloa, Sri Lanka. Although it fails to capture the actual behaviour of any wildlife as I had hoped to achieve, I did learn a lot about Rust and Bevy while doing it :)
 
-### Result
+![Dinacon-2022-Colors-and-Text-and-Logos](https://user-images.githubusercontent.com/2727461/175750323-db1cb815-37c5-4733-81bf-2fb8799334f7.png)
 
-A new release will be available in GitHub, with the archives per platform available as downloadable assets.
+## Why Bevy?
 
-The `git` commands above produced this release: [my-game-1.0](
-https://github.com/bevyengine/bevy_github_ci_template/releases/tag/my-game-1.0).
+![bevy_logo_light_dark_and_dimmed](https://user-images.githubusercontent.com/2727461/190705825-b2fc723e-ea22-41ec-b5e0-4699fe28b82b.svg)
 
-## Using the workflows in your own project
-
-If you would like to use the GitHub workflows included here for your own project, there are a few things you might have to adapt:
-
-1. The release workflow relies on the `index.html` file under `/wasm` for web builds
-2. Make sure that the env variable `binary` ([release.yaml](.github/workflows/release.yaml#L10)) matches the name of your binary
-3. In case your project doesn't have an `assets` folder
-   1. Either create one and put a `.gitkeep` file in it to be able to push it
-   2. Or remove the `cp -r assets` statements in the build jobs
-4. Adapt the used toolchain if you are using nightly
-
-### Publish on itch.io
-
-The release flow can be configured to push the releases to itch.io:
-
-1. Create an API key in https://itch.io/user/settings/api-keys
-2. Go to the repository's Settings tab in GitHub, click on Secrets->Actions in the sidebar,and add a repository secret named `BUTLER_CREDENTIALS` set to the API key.
-3. Uncomment `env.itch_target` in `release.yaml` and set it to the itch.io username and the name of the game on itch.io, separated by a slash (`/`)
-
-Once that is done, any tag pushed to GitHub will trigger an itch.io release and use the tag as the [user version](https://itch.io/docs/butler/pushing.html#specifying-your-own-version-number).
+I've been a Unity developer for more than a decade and decided it's time to learn something new, something using modern software paradigms, something more open and free, and something [without gross ties to the US military](https://kotaku.com/unity-new-contract-us-government-military-army-engine-1849403118). There are a myriad of free and open source game engines being worked on, including some others in Rust, but Bevy seemed like the most promising candidate.
