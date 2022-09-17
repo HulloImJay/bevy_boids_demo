@@ -13,6 +13,7 @@ lto = true
 
 [dependencies]
 bevy = "0.8.1"
+image = "0.24.3"
 lerp = { version = "0.4.0" }
 rand = { version = "0.8.5" }
 big-brain = { version = "0.12.0" }
